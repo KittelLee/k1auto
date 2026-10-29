@@ -520,8 +520,7 @@ img {
 }
 .why-section,
 .services-section,
-.vision-section,
-.event-section {
+.vision-section {
   padding: 100px 0;
 }
 .section-heading {
@@ -537,8 +536,7 @@ img {
   gap: 45px;
 }
 .section-heading h2,
-.vision-copy h2,
-.event-panel h2 {
+.vision-copy h2 {
   margin: 0;
   font-size: clamp(28px, 3.1vw, 43px);
   letter-spacing: -0.07em;
@@ -1508,30 +1506,10 @@ img {
   .section-heading {
     margin-bottom: 29px;
   }
-  /* .service-grid {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-  .service-card {
-    min-height: 0;
-    padding: 23px 22px;
-  }
-  .card-kicker {
-    margin-top: 18px;
-  }
-  .service-card h3 {
-    font-size: 20px;
-  }
-  .service-card > p:not(.card-kicker) {
-    margin-bottom: 19px;
-    font-size: 12px;
-  } */
   .service-grid {
     grid-template-columns: 1fr;
     gap: 10px;
   }
-
-  /* 모바일에서는 PC용 카드 위치 지정 초기화 */
   .service-card:nth-child(n) {
     grid-column: auto;
   }
