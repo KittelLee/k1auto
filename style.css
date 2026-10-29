@@ -1245,6 +1245,10 @@ img {
 .mobile-bottom-cta {
   display: none;
 }
+.mobile-bottom-cta,
+.mobile-bottom-cta * {
+  box-sizing: border-box;
+}
 @media (max-width: 1180px) {
   .container {
     width: min(var(--container), calc(100% - 48px));
@@ -1674,42 +1678,70 @@ img {
   .footer-bottom p {
     font-size: 9px;
   }
+  /* 모바일 하단 고정 상담바 */
   .mobile-bottom-cta {
     position: fixed;
     z-index: 60;
+    left: 0;
     right: 0;
     bottom: 0;
-    left: 0;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 14px;
-    padding: 11px 15px calc(11px + env(safe-area-inset-bottom));
+    gap: 10px;
+
+    width: auto;
+    max-width: 100%;
+    padding: 11px 12px calc(11px + env(safe-area-inset-bottom));
+
+    box-sizing: border-box;
     border-top: 1px solid rgba(255, 255, 255, 0.12);
     color: white;
     background: rgba(16, 24, 32, 0.96);
     backdrop-filter: blur(12px);
   }
+
+  /* 왼쪽 상담 문구 */
+  .mobile-bottom-cta > div {
+    flex: 1 1 0;
+    min-width: 0;
+    width: auto;
+    display: block;
+  }
+
   .mobile-bottom-cta > div small,
   .mobile-bottom-cta > div strong {
     display: block;
+    white-space: nowrap;
   }
+
   .mobile-bottom-cta > div small {
     margin-bottom: 4px;
     color: #a8b1a6;
     font-size: 9px;
   }
+
   .mobile-bottom-cta > div strong {
     font-size: 12px;
+    word-break: keep-all;
   }
+
+  /* 오른쪽 카카오톡 버튼 */
   .mobile-bottom-cta > a {
     display: inline-flex;
+    flex: 0 0 auto;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    min-width: 132px;
+    gap: 6px;
+
+    width: auto;
+    min-width: 0;
     min-height: 42px;
-    padding: 0 13px;
+    padding: 0 10px;
+
+    box-sizing: border-box;
+    white-space: nowrap;
     color: #282916;
     background: var(--kakao);
     font-size: 11px;
