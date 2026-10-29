@@ -41,7 +41,6 @@
 
     if (!section) return;
 
-    // 순서대로 등장시킬 요소를 선택
     const items = [
       section.querySelector(".section-heading .eyebrow"),
       section.querySelector(".section-heading h2"),
@@ -50,26 +49,22 @@
       section.querySelector(".fine-print"),
     ].filter(Boolean);
 
-    // 등장 효과를 적용할 요소에 클래스 추가
     items.forEach((item) => {
       item.classList.add("why-reveal-item");
     });
 
     section.classList.add("why-reveal-ready");
 
-    // 애니메이션을 최소화하도록 설정한 경우에는 바로 표시
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       section.classList.add("why-reveal-visible");
       return;
     }
 
-    // IntersectionObserver 미지원 환경에서는 콘텐츠를 바로 표시
     if (!("IntersectionObserver" in window)) {
       section.classList.add("why-reveal-visible");
       return;
     }
 
-    // 섹션이 화면에 들어오면 한 번만 실행
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -88,12 +83,122 @@
     observer.observe(section);
   }
 
-  // DOM 로딩 상태에 맞게 초기화
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initWhyReveal, {
       once: true,
     });
   } else {
     initWhyReveal();
+  }
+})();
+
+(function () {
+  function initK1ScrollReveal() {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+
+    const configs = [
+      {
+        root: document.querySelector("#services"),
+        selectors: [
+          ".section-heading > .eyebrow",
+          ".section-heading-row > h2",
+          ".section-heading-row > .heading-note",
+          ".service-grid > .service-card",
+        ],
+      },
+      {
+        root: document.querySelector("#about"),
+        selectors: [
+          ".about-heading > .eyebrow",
+          ".about-heading > h2",
+          ".about-mark",
+          ".about-copy > .about-lead",
+          ".about-copy > p:not(.about-lead)",
+          ".about-divider",
+          ".about-subgrid > div",
+        ],
+      },
+      {
+        root: document.querySelector("#car-life"),
+        selectors: [
+          ".vision-copy > .eyebrow",
+          ".vision-copy > h2",
+          ".vision-copy > p:not(.eyebrow)",
+          ".vision-status",
+          ".vision-copy > .button",
+          ".vision-visual",
+        ],
+      },
+      {
+        root: document.querySelector("#contact"),
+        selectors: [
+          ".contact-copy > .eyebrow",
+          ".contact-copy > h2",
+          ".contact-copy > p:not(.eyebrow)",
+          ".contact-copy > .button",
+          ".contact-card-head",
+          ".contact-card > .contact-line",
+          ".contact-card > .contact-kakao",
+        ],
+      },
+      {
+        root: document.querySelector(".community-strip"),
+        selectors: [
+          ".community-symbol",
+          ".community-inner > p",
+          ".community-caption",
+        ],
+      },
+    ];
+
+    if (!("IntersectionObserver" in window)) {
+      return;
+    }
+
+    configs.forEach(({ root, selectors }) => {
+      if (!root) return;
+
+      const items = selectors.flatMap((selector) =>
+        Array.from(root.querySelectorAll(selector)),
+      );
+
+      if (!items.length) return;
+
+      items.forEach((item, index) => {
+        item.classList.add("k1-scroll-reveal");
+
+        const delay = Math.min(index * 0.12, 1.1);
+        item.style.setProperty("--k1-reveal-delay", `${delay}s`);
+      });
+
+      root.classList.add("k1-reveal-ready");
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              root.classList.add("k1-reveal-visible");
+              observer.unobserve(root);
+            }
+          });
+        },
+        {
+          threshold: 0.08,
+          rootMargin: "0px 0px -5% 0px",
+        },
+      );
+
+      observer.observe(root);
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initK1ScrollReveal, {
+      once: true,
+    });
+  } else {
+    initK1ScrollReveal();
   }
 })();
