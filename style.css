@@ -632,10 +632,27 @@ img {
 .section-heading-row .heading-note {
   max-width: 360px;
 }
-.service-grid {
+/* .service-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
+} */
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.service-card:nth-child(-n + 3) {
+  grid-column: span 2;
+}
+
+.service-card:nth-child(4) {
+  grid-column: 2 / span 2;
+}
+
+.service-card:nth-child(5) {
+  grid-column: 4 / span 2;
 }
 .service-card {
   position: relative;
@@ -1491,7 +1508,7 @@ img {
   .section-heading {
     margin-bottom: 29px;
   }
-  .service-grid {
+  /* .service-grid {
     grid-template-columns: 1fr;
     gap: 10px;
   }
@@ -1505,6 +1522,33 @@ img {
   .service-card h3 {
     font-size: 20px;
   }
+  .service-card > p:not(.card-kicker) {
+    margin-bottom: 19px;
+    font-size: 12px;
+  } */
+  .service-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  /* 모바일에서는 PC용 카드 위치 지정 초기화 */
+  .service-card:nth-child(n) {
+    grid-column: auto;
+  }
+
+  .service-card {
+    min-height: 0;
+    padding: 23px 22px;
+  }
+
+  .card-kicker {
+    margin-top: 18px;
+  }
+
+  .service-card h3 {
+    font-size: 20px;
+  }
+
   .service-card > p:not(.card-kicker) {
     margin-bottom: 19px;
     font-size: 12px;
