@@ -254,3 +254,72 @@
     init();
   }
 })();
+
+/* 모바일 하단 상담바 너비 보정 */
+(() => {
+  const cta = document.querySelector(".mobile-bottom-cta");
+
+  if (!cta) return;
+
+  const updateCtaWidth = () => {
+    // 실제 문서의 가로 너비를 기준으로 계산
+    const viewportWidth = document.documentElement.clientWidth;
+
+    if (!viewportWidth) return;
+
+    cta.style.setProperty("position", "fixed", "important");
+    cta.style.setProperty("left", "0px", "important");
+    cta.style.setProperty("right", "auto", "important");
+
+    // 100% 대신 실제 너비를 px로 직접 지정
+    cta.style.setProperty("width", `${viewportWidth}px`, "important");
+
+    cta.style.setProperty("max-width", `${viewportWidth}px`, "important");
+
+    cta.style.setProperty("min-width", "0", "important");
+    cta.style.setProperty("box-sizing", "border-box", "important");
+  };
+
+  // 최초 실행
+  updateCtaWidth();
+
+  // 화면 크기 및 방향 변경 시 다시 계산
+  window.addEventListener("resize", updateCtaWidth);
+
+  // 모바일 뷰포트 변경에도 대응
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener("resize", updateCtaWidth);
+  }
+})();
+
+/* 모바일 하단 상담바 너비 보정 */
+(() => {
+  const cta = document.querySelector(".mobile-bottom-cta");
+
+  if (!cta) return;
+
+  const updateCtaWidth = () => {
+    const viewportWidth = document.documentElement.clientWidth;
+
+    if (!viewportWidth) return;
+
+    cta.style.setProperty("position", "fixed", "important");
+    cta.style.setProperty("left", "0px", "important");
+    cta.style.setProperty("right", "auto", "important");
+
+    cta.style.setProperty("width", `${viewportWidth}px`, "important");
+
+    cta.style.setProperty("max-width", `${viewportWidth}px`, "important");
+
+    cta.style.setProperty("min-width", "0", "important");
+    cta.style.setProperty("box-sizing", "border-box", "important");
+  };
+
+  updateCtaWidth();
+
+  window.addEventListener("resize", updateCtaWidth);
+
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener("resize", updateCtaWidth);
+  }
+})();
