@@ -1,115 +1,182 @@
 (() => {
-  const menuToggle = document.querySelector(".menu-toggle");
-  const primaryNav = document.querySelector(".primary-nav");
-  const navLinks = document.querySelectorAll(".primary-nav a");
+  function init() {
+    /* ========================================
+       1. 모바일 메뉴 열기 / 닫기
+    ======================================== */
 
-  function closeMenu() {
-    if (!menuToggle || !primaryNav) return;
-    menuToggle.setAttribute("aria-expanded", "false");
-    menuToggle.setAttribute("aria-label", "메뉴 열기");
-    primaryNav.classList.remove("is-open");
-    document.body.classList.remove("menu-open");
-  }
+    const menuToggle = document.querySelector(".menu-toggle");
+    const primaryNav = document.querySelector(".primary-nav");
+    const navLinks = document.querySelectorAll(".primary-nav a");
 
-  if (menuToggle && primaryNav) {
-    menuToggle.addEventListener("click", () => {
-      const opening = menuToggle.getAttribute("aria-expanded") !== "true";
-      menuToggle.setAttribute("aria-expanded", String(opening));
-      menuToggle.setAttribute(
-        "aria-label",
-        opening ? "메뉴 닫기" : "메뉴 열기",
+    function closeMenu() {
+      if (!menuToggle || !primaryNav) return;
+
+      menuToggle.setAttribute("aria-expanded", "false");
+      menuToggle.setAttribute("aria-label", "메뉴 열기");
+      primaryNav.classList.remove("is-open");
+      document.body.classList.remove("menu-open");
+    }
+
+    if (menuToggle && primaryNav) {
+      menuToggle.addEventListener("click", () => {
+        const opening = menuToggle.getAttribute("aria-expanded") !== "true";
+
+        menuToggle.setAttribute("aria-expanded", String(opening));
+        menuToggle.setAttribute(
+          "aria-label",
+          opening ? "메뉴 닫기" : "메뉴 열기",
+        );
+
+        primaryNav.classList.toggle("is-open", opening);
+        document.body.classList.toggle("menu-open", opening);
+      });
+
+      navLinks.forEach((link) => {
+        link.addEventListener("click", closeMenu);
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") closeMenu();
+      });
+
+      window.addEventListener("resize", () => {
+        if (window.innerWidth > 980) closeMenu();
+      });
+    }
+
+    /* ========================================
+       2. 푸터 연도 자동 표시
+    ======================================== */
+
+    const year = document.querySelector("#current-year");
+
+    if (year) {
+      year.textContent = String(new Date().getFullYear());
+    }
+
+    /* ========================================
+       3. 스크롤 애니메이션 공통 설정
+    ======================================== */
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    const supportsObserver = "IntersectionObserver" in window;
+
+    function setupScrollReveal({
+      root,
+      selectors,
+      itemClass,
+      readyClass,
+      visibleClass,
+      threshold = 0.1,
+      rootMargin = "0px 0px -5% 0px",
+      delayProperty = null,
+      observeItems = false,
+      itemVisibleClass = null,
+    }) {
+      if (!root) return;
+
+      const items = selectors.flatMap((selector) =>
+        Array.from(root.querySelectorAll(selector)),
       );
-      primaryNav.classList.toggle("is-open", opening);
-      document.body.classList.toggle("menu-open", opening);
-    });
-    navLinks.forEach((link) => link.addEventListener("click", closeMenu));
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") closeMenu();
-    });
-    window.addEventListener("resize", () => {
-      if (window.innerWidth > 980) closeMenu();
-    });
-  }
 
-  const year = document.querySelector("#current-year");
-  if (year) year.textContent = String(new Date().getFullYear());
-})();
+      if (!items.length) return;
 
-(function () {
-  function initWhyReveal() {
-    const section = document.querySelector("#why-k1");
+      items.forEach((item, index) => {
+        item.classList.add(itemClass);
 
-    if (!section) return;
+        if (delayProperty) {
+          const delay = Math.min(index * 0.07, 0.45);
+          item.style.setProperty(delayProperty, `${delay}s`);
+        }
+      });
 
-    const items = [
-      section.querySelector(".section-heading .eyebrow"),
-      section.querySelector(".section-heading h2"),
-      section.querySelector(".heading-note"),
-      ...section.querySelectorAll(".why-card"),
-      section.querySelector(".fine-print"),
-    ].filter(Boolean);
+      root.classList.add(readyClass);
 
-    items.forEach((item) => {
-      item.classList.add("why-reveal-item");
-    });
+      // 모션 최소화 또는 미지원 브라우저에서는 즉시 표시
+      if (prefersReducedMotion || !supportsObserver) {
+        if (observeItems && itemVisibleClass) {
+          items.forEach((item) => {
+            item.classList.add(itemVisibleClass);
+          });
+        } else {
+          root.classList.add(visibleClass);
+        }
 
-    section.classList.add("why-reveal-ready");
+        return;
+      }
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      section.classList.add("why-reveal-visible");
-      return;
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+
+            if (observeItems && itemVisibleClass) {
+              // 개별 요소가 화면에 들어오면 해당 요소만 표시
+              entry.target.classList.add(itemVisibleClass);
+              observer.unobserve(entry.target);
+            } else {
+              // 기존 섹션 단위 등장 방식
+              root.classList.add(visibleClass);
+              observer.unobserve(root);
+            }
+          });
+        },
+        {
+          threshold,
+          rootMargin,
+        },
+      );
+
+      if (observeItems && itemVisibleClass) {
+        items.forEach((item) => observer.observe(item));
+      } else {
+        observer.observe(root);
+      }
     }
 
-    if (!("IntersectionObserver" in window)) {
-      section.classList.add("why-reveal-visible");
-      return;
-    }
+    setupScrollReveal({
+      root: document.querySelector("#why-k1"),
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            section.classList.add("why-reveal-visible");
-            observer.unobserve(section);
-          }
-        });
-      },
-      {
-        threshold: 0.15,
-        rootMargin: "0px 0px -6% 0px",
-      },
-    );
+      selectors: [
+        ".section-heading .eyebrow",
+        ".section-heading h2",
+        ".heading-note",
+        ".why-card",
+        ".fine-print",
+      ],
 
-    observer.observe(section);
-  }
+      itemClass: "why-reveal-item",
+      readyClass: "why-reveal-ready",
+      visibleClass: "why-reveal-visible",
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initWhyReveal, {
-      once: true,
+      observeItems: true,
+      itemVisibleClass: "why-item-visible",
+
+      // 요소가 화면에 더 들어온 뒤 실행
+      threshold: 0.2,
+      rootMargin: "0px 0px -20% 0px",
     });
-  } else {
-    initWhyReveal();
-  }
-})();
 
-(function () {
-  function initK1ScrollReveal() {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      return;
-    }
-
-    const configs = [
+    const revealConfigs = [
       {
         root: document.querySelector("#services"),
+
         selectors: [
           ".section-heading > .eyebrow",
           ".section-heading-row > h2",
           ".section-heading-row > .heading-note",
           ".service-grid > .service-card",
         ],
+        observeItems: true,
+        itemVisibleClass: "k1-item-visible",
       },
+
       {
         root: document.querySelector("#about"),
+
         selectors: [
           ".about-heading > .eyebrow",
           ".about-heading > h2",
@@ -120,8 +187,10 @@
           ".about-subgrid > div",
         ],
       },
+
       {
         root: document.querySelector("#car-life"),
+
         selectors: [
           ".vision-copy > .eyebrow",
           ".vision-copy > h2",
@@ -131,8 +200,10 @@
           ".vision-visual",
         ],
       },
+
       {
         root: document.querySelector("#contact"),
+
         selectors: [
           ".contact-copy > .eyebrow",
           ".contact-copy > h2",
@@ -143,8 +214,10 @@
           ".contact-card > .contact-kakao",
         ],
       },
+
       {
         root: document.querySelector(".community-strip"),
+
         selectors: [
           ".community-symbol",
           ".community-inner > p",
@@ -153,52 +226,31 @@
       },
     ];
 
-    if (!("IntersectionObserver" in window)) {
-      return;
-    }
+    revealConfigs.forEach((config) => {
+      setupScrollReveal({
+        ...config,
 
-    configs.forEach(({ root, selectors }) => {
-      if (!root) return;
+        itemClass: "k1-scroll-reveal",
+        readyClass: "k1-reveal-ready",
+        visibleClass: "k1-reveal-visible",
 
-      const items = selectors.flatMap((selector) =>
-        Array.from(root.querySelectorAll(selector)),
-      );
+        threshold: 0.08,
+        rootMargin: "0px 0px -5% 0px",
 
-      if (!items.length) return;
-
-      items.forEach((item, index) => {
-        item.classList.add("k1-scroll-reveal");
-
-        const delay = Math.min(index * 0.12, 1.1);
-        item.style.setProperty("--k1-reveal-delay", `${delay}s`);
+        delayProperty: "--k1-reveal-delay",
       });
-
-      root.classList.add("k1-reveal-ready");
-
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              root.classList.add("k1-reveal-visible");
-              observer.unobserve(root);
-            }
-          });
-        },
-        {
-          threshold: 0.08,
-          rootMargin: "0px 0px -5% 0px",
-        },
-      );
-
-      observer.observe(root);
     });
   }
 
+  /* ========================================
+     6. 페이지 초기화는 한 번만 실행
+  ======================================== */
+
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initK1ScrollReveal, {
+    document.addEventListener("DOMContentLoaded", init, {
       once: true,
     });
   } else {
-    initK1ScrollReveal();
+    init();
   }
 })();
