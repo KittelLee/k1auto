@@ -123,9 +123,6 @@ img {
   font: 800 17px/1 var(--font-en);
   letter-spacing: -0.07em;
 }
-.brand-period {
-  color: var(--accent);
-}
 .brand-word small {
   display: block;
   padding-top: 6px;
@@ -578,7 +575,6 @@ img {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
   border-top: 1px solid var(--line);
-  /* border-bottom: 1px solid var(--line); */
 }
 .why-card {
   grid-column: span 2;
@@ -811,9 +807,6 @@ img {
   font: 900 86px/0.9 var(--font-en);
   letter-spacing: -0.1em;
 }
-.about-mark span {
-  color: rgba(230, 57, 70, 0.25);
-}
 .about-copy {
   padding-top: 34px;
 }
@@ -990,60 +983,6 @@ img {
   bottom: 13%;
   left: 35%;
 }
-.event-panel {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  align-items: center;
-  gap: 70px;
-  padding: 48px 54px;
-  border: 1px solid var(--line);
-  background: #ffffff;
-}
-.event-panel .eyebrow {
-  margin-bottom: 17px;
-}
-.event-panel h2 {
-  font-size: clamp(25px, 2.8vw, 37px);
-}
-.event-panel > div:first-child > p:not(.eyebrow) {
-  max-width: 430px;
-  margin: 17px 0 0;
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.9;
-}
-.event-status {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 27px;
-  border: 1px solid var(--line);
-  background: var(--paper);
-}
-.event-status-icon {
-  display: grid;
-  place-items: center;
-  width: 31px;
-  height: 31px;
-  margin-bottom: 19px;
-  border-radius: 50%;
-  background: var(--accent-light);
-  color: var(--accent-dark);
-  font-size: 18px;
-}
-.event-status strong {
-  font-size: 18px;
-  letter-spacing: -0.04em;
-}
-.event-status small {
-  margin: 7px 0 20px;
-  color: var(--muted);
-  font-size: 12.4px;
-}
-.event-status .button {
-  min-height: 41px;
-  font-size: 12px;
-}
 .contact-section {
   padding: 98px 0;
 }
@@ -1084,9 +1023,6 @@ img {
 .contact-logo {
   font: 900 24px/1 var(--font-en);
   letter-spacing: -0.1em;
-}
-.contact-logo span {
-  color: var(--accent);
 }
 .contact-type {
   color: var(--muted);
@@ -1274,24 +1210,12 @@ img {
   .menu-toggle {
     display: flex;
   }
-  .menu-toggle span {
-  }
-  .menu-toggle[aria-expanded="true"] span:first-child {
-  }
-  .menu-toggle[aria-expanded="true"] span:last-child {
-  }
   .primary-nav {
     position: fixed;
     top: 110px;
     right: 0;
     bottom: 0;
     left: 0;
-  }
-  .primary-nav.is-open {
-  }
-  .primary-nav > a {
-  }
-  .primary-nav .nav-cta {
   }
   .hero-inner {
     grid-template-columns: 1fr 1fr;
@@ -1318,10 +1242,6 @@ img {
   }
   .service-card {
     padding: 23px;
-  }
-  .event-panel {
-    padding: 38px;
-    gap: 38px;
   }
   .contact-grid {
     gap: 45px;
@@ -1565,20 +1485,6 @@ img {
   .vision-center span {
     font-size: 23px;
   }
-  .event-panel {
-    grid-template-columns: 1fr;
-    gap: 25px;
-    padding: 28px 23px;
-  }
-  .event-panel h2 {
-    font-size: 28px;
-  }
-  .event-panel > div:first-child > p:not(.eyebrow) {
-    font-size: 11px;
-  }
-  .event-status {
-    padding: 22px;
-  }
   .contact-section {
     padding: 67px 0;
   }
@@ -1668,36 +1574,29 @@ img {
     border-top: 1px solid rgba(255, 255, 255, 0.12);
     backdrop-filter: blur(12px);
   }
-  /* 왼쪽 상담 문구 */
   .mobile-bottom-cta > div {
     display: block;
     min-width: 0;
     width: 100%;
     overflow: hidden;
   }
-
-  /* 오른쪽 카카오톡 버튼 */
   .mobile-bottom-cta > a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 5px;
-
     width: auto;
     min-width: 0;
     max-width: 100%;
     min-height: 42px;
     margin: 0;
     padding: 0 9px;
-
     box-sizing: border-box;
     white-space: nowrap;
     flex-shrink: 1;
-
     color: #282916;
     background: var(--kakao);
     border-radius: 3px;
-
     font-size: 11px;
     font-weight: 800;
   }
@@ -1819,21 +1718,17 @@ img {
   transition-delay: var(--why-delay, 0s);
 }
 
-/* 각 요소가 화면에 들어오면 표시 */
 #why-k1.why-reveal-ready .why-reveal-item.why-item-visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* 태블릿과 모바일은 요소마다 화면에 진입하므로
-   별도의 지연 없이 자연스럽게 표시 */
 @media (max-width: 980px) {
   #why-k1.why-reveal-ready .why-reveal-item {
     transition-delay: 0s;
   }
 }
 
-/* 접근성 설정 */
 @media (prefers-reduced-motion: reduce) {
   #why-k1.why-reveal-ready .why-reveal-item {
     opacity: 1;
@@ -1922,7 +1817,6 @@ img {
   transform: translateY(0);
 }
 
-/* 등장한 서비스 카드의 호버 효과 유지 */
 #services.k1-reveal-ready .service-card.k1-scroll-reveal.k1-item-visible:hover {
   transform: translateY(-4px);
 }
@@ -1993,28 +1887,16 @@ img {
   }
 }
 
-/* =========================================
-   K1 AUTO - TABLET & MOBILE FULLSCREEN MENU
-========================================= */
-
 @media (max-width: 980px) {
-  /* 메뉴가 열리면 페이지 스크롤 잠금 */
   body.menu-open {
     overflow: hidden;
   }
-
-  /* 메뉴가 열렸을 때 헤더의 블러가 메뉴를 가두지 않도록 */
   body.menu-open .site-header {
     z-index: 100;
     background: transparent;
     border-bottom-color: transparent;
     backdrop-filter: none;
   }
-
-  /* -----------------------------------------
-     1. 우측 상단 햄버거 버튼
-  ----------------------------------------- */
-
   .menu-toggle {
     position: relative;
     z-index: 140;
@@ -2041,32 +1923,24 @@ img {
       background 0.25s ease,
       border-color 0.25s ease;
   }
-
   .menu-toggle span {
     display: block;
     width: 19px;
     height: 2px;
-
     border-radius: 2px;
     background: var(--ink);
-
     transition:
       transform 0.3s ease,
       opacity 0.2s ease,
       background 0.25s ease;
   }
-
-  /* 메뉴가 열리면 버튼을 레드로 */
   .menu-toggle[aria-expanded="true"] {
     border-color: var(--accent);
     background: var(--accent);
   }
-
   .menu-toggle[aria-expanded="true"] span {
     background: #ffffff;
   }
-
-  /* 햄버거 3줄을 X로 변환 */
   .menu-toggle[aria-expanded="true"] span:first-child {
     transform: translateY(6px) rotate(45deg);
   }
@@ -2079,10 +1953,6 @@ img {
   .menu-toggle[aria-expanded="true"] span:last-child {
     transform: translateY(-6px) rotate(-45deg);
   }
-
-  /* -----------------------------------------
-     2. 전체 화면 메뉴 배경
-  ----------------------------------------- */
 
   .primary-nav {
     position: fixed;
@@ -2130,17 +2000,12 @@ img {
       visibility 0.42s;
   }
 
-  /* 메뉴 열기 */
   .primary-nav.is-open {
     transform: translateX(0);
     visibility: visible;
     pointer-events: auto;
     margin: 0;
   }
-
-  /* -----------------------------------------
-     3. 메뉴 상단 브랜드 라벨
-  ----------------------------------------- */
 
   .primary-nav::before {
     content: "K1 AUTO  /  MENU";
@@ -2158,10 +2023,6 @@ img {
     font: 800 12px/1.5 var(--font-en);
     letter-spacing: 0.15em;
   }
-
-  /* -----------------------------------------
-     4. 메뉴 하단 안내 문구
-  ----------------------------------------- */
 
   .primary-nav::after {
     content: "K1 AUTO  ·  CUSTOMER CARE\A차량 조건에 맞는 빠른 상담을 도와드립니다.";
@@ -2182,10 +2043,6 @@ img {
 
     pointer-events: none;
   }
-
-  /* -----------------------------------------
-     5. 개별 메뉴 링크
-  ----------------------------------------- */
 
   .primary-nav > a {
     display: flex;
@@ -2217,7 +2074,6 @@ img {
       padding-left 0.2s ease;
   }
 
-  /* 메뉴 앞의 01, 02, 03 번호 */
   .primary-nav > a:not(.nav-cta)::before {
     counter-increment: k1-menu;
     content: "0" counter(k1-menu);
@@ -2230,7 +2086,6 @@ img {
     letter-spacing: 0.12em;
   }
 
-  /* 메뉴 우측 화살표 */
   .primary-nav > a:not(.nav-cta)::after {
     content: "↗";
 
@@ -2253,7 +2108,6 @@ img {
     transition: transform 0.2s ease;
   }
 
-  /* 메뉴가 열릴 때 순차적으로 등장 */
   .primary-nav.is-open > a {
     opacity: 1;
     transform: translateX(0);
@@ -2296,10 +2150,6 @@ img {
     transform: translate(3px, -3px);
   }
 
-  /* -----------------------------------------
-     6. 강조된 상담 메뉴 버튼
-  ----------------------------------------- */
-
   .primary-nav .nav-cta {
     display: flex;
     align-items: center;
@@ -2335,11 +2185,6 @@ img {
     border-color: var(--accent-dark);
     background: var(--accent-dark);
   }
-
-  /* -----------------------------------------
-     7. 모션 최소화 설정 지원
-  ----------------------------------------- */
-
   @media (prefers-reduced-motion: reduce) {
     .primary-nav,
     .primary-nav > a,
