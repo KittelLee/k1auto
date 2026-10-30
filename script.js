@@ -1,30 +1,33 @@
 (() => {
+  "use strict";
+
   function init() {
     const menuToggle = document.querySelector(".menu-toggle");
     const primaryNav = document.querySelector(".primary-nav");
-    const navLinks = document.querySelectorAll(".primary-nav a");
-
-    function closeMenu() {
-      if (!menuToggle || !primaryNav) return;
-
-      menuToggle.setAttribute("aria-expanded", "false");
-      menuToggle.setAttribute("aria-label", "메뉴 열기");
-      primaryNav.classList.remove("is-open");
-      document.body.classList.remove("menu-open");
-    }
 
     if (menuToggle && primaryNav) {
-      menuToggle.addEventListener("click", () => {
-        const opening = menuToggle.getAttribute("aria-expanded") !== "true";
+      const navLinks = primaryNav.querySelectorAll("a");
 
-        menuToggle.setAttribute("aria-expanded", String(opening));
+      function closeMenu() {
+        menuToggle.setAttribute("aria-expanded", "false");
+        menuToggle.setAttribute("aria-label", "메뉴 열기");
+
+        primaryNav.classList.remove("is-open");
+        document.body.classList.remove("menu-open");
+      }
+
+      menuToggle.addEventListener("click", () => {
+        const isOpening = menuToggle.getAttribute("aria-expanded") !== "true";
+
+        menuToggle.setAttribute("aria-expanded", String(isOpening));
+
         menuToggle.setAttribute(
           "aria-label",
-          opening ? "메뉴 닫기" : "메뉴 열기",
+          isOpening ? "메뉴 닫기" : "메뉴 열기",
         );
 
-        primaryNav.classList.toggle("is-open", opening);
-        document.body.classList.toggle("menu-open", opening);
+        primaryNav.classList.toggle("is-open", isOpening);
+        document.body.classList.toggle("menu-open", isOpening);
       });
 
       navLinks.forEach((link) => {
@@ -32,18 +35,22 @@
       });
 
       document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") closeMenu();
+        if (event.key === "Escape") {
+          closeMenu();
+        }
       });
 
       window.addEventListener("resize", () => {
-        if (window.innerWidth > 980) closeMenu();
+        if (window.innerWidth > 980) {
+          closeMenu();
+        }
       });
     }
 
-    const year = document.querySelector("#current-year");
+    const currentYear = document.querySelector("#current-year");
 
-    if (year) {
-      year.textContent = String(new Date().getFullYear());
+    if (currentYear) {
+      currentYear.textContent = new Date().getFullYear();
     }
 
     const prefersReducedMotion = window.matchMedia(
@@ -55,10 +62,10 @@
     function setupScrollReveal({
       root,
       selectors,
-      itemClass,
-      readyClass,
-      visibleClass,
-      threshold = 0.1,
+      itemClass = "k1-scroll-reveal",
+      readyClass = "k1-reveal-ready",
+      visibleClass = "k1-reveal-visible",
+      threshold = 0.08,
       rootMargin = "0px 0px -5% 0px",
       delayProperty = null,
       observeItems = false,
@@ -77,6 +84,7 @@
 
         if (delayProperty) {
           const delay = Math.min(index * 0.07, 0.45);
+
           item.style.setProperty(delayProperty, `${delay}s`);
         }
       });
@@ -154,6 +162,7 @@
           ".section-heading-row > .heading-note",
           ".service-grid > .service-card",
         ],
+
         observeItems: true,
         itemVisibleClass: "k1-item-visible",
       },
@@ -224,6 +233,42 @@
         delayProperty: "--k1-reveal-delay",
       });
     });
+
+    const mobileCta = document.querySelector(".mobile-bottom-cta");
+
+    if (mobileCta) {
+      function updateCtaWidth() {
+        const viewportWidth = document.documentElement.clientWidth;
+
+        if (!viewportWidth) return;
+
+        mobileCta.style.setProperty("position", "fixed", "important");
+
+        mobileCta.style.setProperty("left", "0px", "important");
+
+        mobileCta.style.setProperty("right", "auto", "important");
+
+        mobileCta.style.setProperty("width", `${viewportWidth}px`, "important");
+
+        mobileCta.style.setProperty(
+          "max-width",
+          `${viewportWidth}px`,
+          "important",
+        );
+
+        mobileCta.style.setProperty("min-width", "0", "important");
+
+        mobileCta.style.setProperty("box-sizing", "border-box", "important");
+      }
+
+      updateCtaWidth();
+
+      window.addEventListener("resize", updateCtaWidth);
+
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener("resize", updateCtaWidth);
+      }
+    }
   }
 
   if (document.readyState === "loading") {
@@ -232,67 +277,5 @@
     });
   } else {
     init();
-  }
-})();
-
-(() => {
-  const cta = document.querySelector(".mobile-bottom-cta");
-
-  if (!cta) return;
-
-  const updateCtaWidth = () => {
-    const viewportWidth = document.documentElement.clientWidth;
-
-    if (!viewportWidth) return;
-
-    cta.style.setProperty("position", "fixed", "important");
-    cta.style.setProperty("left", "0px", "important");
-    cta.style.setProperty("right", "auto", "important");
-
-    cta.style.setProperty("width", `${viewportWidth}px`, "important");
-
-    cta.style.setProperty("max-width", `${viewportWidth}px`, "important");
-
-    cta.style.setProperty("min-width", "0", "important");
-    cta.style.setProperty("box-sizing", "border-box", "important");
-  };
-
-  updateCtaWidth();
-
-  window.addEventListener("resize", updateCtaWidth);
-
-  if (window.visualViewport) {
-    window.visualViewport.addEventListener("resize", updateCtaWidth);
-  }
-})();
-
-(() => {
-  const cta = document.querySelector(".mobile-bottom-cta");
-
-  if (!cta) return;
-
-  const updateCtaWidth = () => {
-    const viewportWidth = document.documentElement.clientWidth;
-
-    if (!viewportWidth) return;
-
-    cta.style.setProperty("position", "fixed", "important");
-    cta.style.setProperty("left", "0px", "important");
-    cta.style.setProperty("right", "auto", "important");
-
-    cta.style.setProperty("width", `${viewportWidth}px`, "important");
-
-    cta.style.setProperty("max-width", `${viewportWidth}px`, "important");
-
-    cta.style.setProperty("min-width", "0", "important");
-    cta.style.setProperty("box-sizing", "border-box", "important");
-  };
-
-  updateCtaWidth();
-
-  window.addEventListener("resize", updateCtaWidth);
-
-  if (window.visualViewport) {
-    window.visualViewport.addEventListener("resize", updateCtaWidth);
   }
 })();
